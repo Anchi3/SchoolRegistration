@@ -1,0 +1,86 @@
+﻿@model IEnumerable<SchoolRegistration.Models.Courses>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Courses List</h1>
+
+<p>
+    <a asp-action="Create">Add New Course</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+               Course Number
+            </th>
+            <th>
+               Course Name
+            </th>
+            <th>
+                Course Description
+            </th>
+            <th>
+              Credits
+            </th>
+            <th></th>
+           
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    <a id="@item.CourseId" data-toggle="modal" href="#myModal" data-target="#exampleModalCenter" value="Details" onclick="Details(this.id);">@Html.DisplayFor(modelItem => item.CourseNumber)</a>
+                </td>
+                <td>
+                   @Html.DisplayFor(modelItem => item.CourseName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CourseDescription)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Units)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.CourseId">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.CourseId">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.CourseId">Remove</a>
+                </td>
+            </tr>
+
+        }
+
+    </tbody>
+    
+</table>
+<br />
+<p>Click on the Course Number to View the STUDENTS CURRENTLY ENROLLED In the Course</p>
+
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+
+            <div class="modal-body">
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script>
+    function Details(id) {
+        console.log (id);
+        $.get("@Url.Action("GetByCourse", "Students")/" + id,
+        function (data) { $('.modal-body').html(data); });
+
+        confirm.log(data);
+        $('#myModal').modal('show');
+        }
+
+</script>
+
+
